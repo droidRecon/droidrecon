@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "81526427601",
+    "project_id": "droidrecon-781b3",
+    "storage_bucket": "droidrecon-781b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81526427601:android:6db8aaf5b33a47ad1ddaf0",
+        "android_client_info": {
+          "package_name": "com.iiitmk.project.droidrecon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81526427601-531ttkhl8j7t6ri5sjrlcmpb74en77ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCANN2Pa_IwuwlpVLh3qIcUKtJmAQE-rGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81526427601-531ttkhl8j7t6ri5sjrlcmpb74en77ho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
