@@ -80,8 +80,23 @@ def serviceEnum(port):
     except OSError:
         return ""
 
-def bannerEnum(port):
-    return "Port-Banner"
+# def bannerEnum(port):
+#     return "Port-Banner"
+
+def bannerEnum(domain,port):
+    if port in [53,80,6980,443]:
+        return ""
+    try:
+        s=socket.socket()
+        s.settimeout(2)
+        s.connect((domain,int(port)))
+        banner=s.recv(1024)
+        s.shutdown(1) # By convention, but not actually necessary
+        s.close()
+        #print(banner.decode("utf-8"))
+        return banner.decode("utf-8")
+    except Exception as e:
+        return ""
 
 def main(userInput):
     ###print(extractFe(userInput))
@@ -112,7 +127,7 @@ def main(userInput):
         for port in ports:
             portDetials={}
             service = serviceEnum(port)
-            banner = bannerEnum(port)
+            banner = bannerEnum(host[0],port)
             portDetials["service"]=service
             portDetials["banner"]=banner
             portDetials["portNo"]=port

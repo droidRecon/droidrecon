@@ -15,11 +15,17 @@
         android:layout_height="wrap_content"
         android:gravity="end">
 
+
         <Button
+            android:id="@+id/logoutHomeUI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LogOut"
-            android:id="@+id/logoutHomeUI"/>
+            android:textAllCaps="false"
+            android:text="LogOut "
+            app:icon="@drawable/logout"
+            app:iconSize="25dp"
+            android:textColor="#0C84E4"
+            style="?attr/materialButtonOutlinedStyle" />
 
     </LinearLayout>
 
@@ -118,11 +124,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBarHomeUi" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview"/>
+
+        </ScrollView>
     </LinearLayout>
 
 

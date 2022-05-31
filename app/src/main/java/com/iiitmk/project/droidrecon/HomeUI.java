@@ -18,8 +18,15 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +36,8 @@ public class HomeUI extends AppCompatActivity {
     EditText edTarget;
     TextView txt;
     ProgressBar mProgressbar;
+
+    DatabaseReference reference;
 
     Handler ObjHandler = new Handler(){
 
@@ -97,8 +106,18 @@ public class HomeUI extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Scanning on normal", Toast.LENGTH_SHORT).show();
-
+                //Change the Phone no with logged user cred,,,
+                String phone="9447574692";
                 String host = edTarget.getText().toString().trim();
+
+                String ref = host.replace(".","-");
+                //getting the current date and time...
+                DateFormat df= new SimpleDateFormat("MMM-dd-yyyy HH-mm-ss");
+                Date dateobj = new Date();
+
+                //Making the Initial reference for first entry to DB...
+                reference= FirebaseDatabase.getInstance().getReference().child("Data").child("ScanResult").child(phone).child(ref).child(df.format(dateobj));
+
 
                 //making new thread...
 
@@ -129,26 +148,121 @@ public class HomeUI extends AppCompatActivity {
                         });
 
 
-                        //ObjBundle.putString("ADC","1");
+                        Domain domain = new Domain();
 
-                        Map<PyObject, PyObject> obj = pyObject.callAttr("main",host).asMap();
-//
-//
-//                        //getting the domain name...
-//                        String domain = obj.get("domain").toString();
-//                        ObjBundle.putString("EFGx", domain);
-//                        //getting the 1st subdomain detials...
-//                        List<PyObject> subDomains = obj.get("subDomains").asList();
-//                        ObjBundle.putString("EFGx", String.valueOf(subDomains.get(0)));
-//                        //getting the detials of sub domains...
-//                        PyObject innerdomainName = obj.get("subDomains");
-//                        ObjBundle.putString("EFGx", innerdomainName.toString());
-//
-//                        Map<PyObject,PyObject> innerdomainDet = obj.get("subDomains").asList().get(0).asMap();
-//                        String inn = innerdomainDet.get("status").toString();
-                        //#1.PyObject obj = pyObject.callAttr("main",host);
-                        //List<PyObject> subDomains = obj.get(0).asList();
-                        ObjBundle.putString("EFG", obj.toString());
+                        Map<PyObject, PyObject> obj = py.getModule("main").callAttr("main",host).asMap();
+                        //getting the domain name... e.g: google.com
+                        String domainName = obj.get("domain").toString();
+                        domain.setDomainName(domainName);
+
+                        //.ObjBundle.putString("EFG", domainName);
+                        //getting the subdomain detials...
+                        List<PyObject> subDomainDetials = obj.get("subdomains").asList();
+
+                        boolean xsize = subDomainDetials.isEmpty();
+                        ObjBundle.putString("EFG", String.valueOf(xsize));
+                        //a temp list for storing all suddomain objects...
+                        List <SubDomain> dataSubDomainQue = new ArrayList<>();
+
+                        List <Port> dataPortQUe;
+                        if(!subDomainDetials.isEmpty()){
+                            //subdomain list is not empty...
+                            for(int i=0;i<subDomainDetials.size();i++){
+                                SubDomain subDomain = new SubDomain();
+                                //getting the inner Domain name...
+                                Map<PyObject,PyObject> innerdomainDet = obj.get("subdomains").asList().get(i).asMap();
+                                //getting the inner-domain name...
+                                String subdomainName = innerdomainDet.get("domain").toString();
+                                //getting the status...
+                                String status = innerdomainDet.get("status").toString();
+                                //getting the allowed methods...
+                                String methods;
+                                try{
+                                    methods = innerdomainDet.get("methods").toString();
+                                }catch (Exception e){
+                                    methods = "No-Data";
+                                }
+                                //adding data to subdomain object...
+                                subDomain.setSubDomainName(subdomainName);
+                                subDomain.setStatus(status);
+                                subDomain.setDNS("DNS-Data");
+                                subDomain.setTechnology("TECH-Data");
+                                subDomain.setMethods(methods);
+                                subDomain.setWhois("WHOIS-Data");
+                                //a temp list for storing all the ports...
+                                dataPortQUe = new ArrayList<>();
+                                //getting the ports...
+                                //there is chance for the ports list is empty...
+                                List<PyObject> portDetials = innerdomainDet.get("ports").asList();
+                                if(!portDetials.isEmpty()){
+                                    //port list is not empty
+                                    for(int j=0;j<portDetials.size();j++){
+                                        Port port = new Port();
+                                        //traveling through each port list elements...
+                                        Map<PyObject,PyObject> innerPortDet = innerdomainDet.get("ports").asList().get(j).asMap();
+                                        //getting port number...
+                                        String portNo = innerPortDet.get("portNo").toString();
+                                        //getting service...
+                                        String service = innerPortDet.get("service").toString();
+                                        //getting banner...
+                                        String banner = innerPortDet.get("banner").toString();
+
+                                        port.setPortNo(portNo);
+                                        port.setBanner(banner);
+                                        port.setService(service);
+                                        //adding to SubDoamin class...
+                                        dataPortQUe.add(port);
+                                    }
+                                }else{
+                                    //port list is empty...
+                                    //adding an templete with no-data...
+                                    Port port = new Port();
+                                    port.setPortNo("No-Data");
+                                    port.setBanner("No-Data");
+                                    port.setService("No-Data");
+                                    //adding to SubDoamin class...
+                                    dataPortQUe.add(port);
+                                }
+                                subDomain.setPortList(dataPortQUe);
+
+                                dataSubDomainQue.add(subDomain);
+                            }
+                        }else {
+                            //Subdomain list is empty..
+                            //adding an templete with no-data...
+                            SubDomain subDomain = new SubDomain();
+                            subDomain.setWhois("No-Data");
+                            subDomain.setSubDomainName("No-Data");
+                            subDomain.setMethods("No-Data");
+                            subDomain.setDNS("No-Data");
+                            subDomain.setTechnology("No-Data");
+                            subDomain.setStatus("No-Data");
+
+
+                            dataPortQUe = new ArrayList<>();
+
+                            Port port = new Port();
+                            port.setPortNo("No-Data");
+                            port.setBanner("No-Data");
+                            port.setService("No-Data");
+                            //adding to SubDoamin class...
+                            dataPortQUe.add(port);
+
+
+                            subDomain.setPortList(dataPortQUe);
+
+                            dataSubDomainQue.add(subDomain);
+
+
+                        }
+
+                        domain.setSubDomainList(dataSubDomainQue);
+                        reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
+                            }
+                        });
 
 
                         ObjMessage.setData(ObjBundle);
@@ -162,6 +276,210 @@ public class HomeUI extends AppCompatActivity {
                             @Override
                             public void run() {
                                 btnNormal.setEnabled(true);
+                                mProgressbar.setVisibility(4);
+                            }
+                        });
+                    }
+                };
+                Thread ObjBgThread = new Thread(ObjRunnable);
+                ObjBgThread.start();
+            }
+        });
+
+
+        //logout Button....
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Scanning on normal", Toast.LENGTH_SHORT).show();
+                //Change the Phone no with logged user cred,,,
+                String phone="9447574692";
+                //Making the Initial reference for first entry to DB...
+                reference= FirebaseDatabase.getInstance().getReference().child("Data").child("ScanResult").child(phone);
+
+//                Domain domain = new Domain();
+//                //1
+//
+//                SubDomain subDomain1 = new SubDomain();
+//                subDomain1.setSubDomainName("qwert.abc.com");
+//                subDomain1.setStatus("200");
+//
+//                List <SubDomain> data = new ArrayList<>();
+//                data.add(subDomain1);
+//
+//                SubDomain subDomain2 = new SubDomain();
+//                subDomain2.setSubDomainName("efg.abc.com");
+//                subDomain2.setStatus("404");
+//
+//                data.add(subDomain2);
+//
+//                domain.setSubDomainList(data);
+//
+//                reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
+//                    }
+//                });
+
+
+
+
+
+                //making new thread...
+                Runnable ObjRunnable = new Runnable() {
+                    Message ObjMessage = ObjHandler.obtainMessage();
+                    Bundle ObjBundle = new Bundle();
+
+                    @Override
+                    public void run() {
+                        //mProgressbar.setVisibility(View.VISIBLE);
+
+                        //String domain = "x";
+                        //String subDomains = "x";
+                        //String innerDomain = "x";
+                        //String status = "x";
+                        //String sdomain = "x";
+                        //btnNormal.setEnabled(false);
+                        //Maing the ProgressBar Visible and Button Invisible...
+                        ObjHandler.post(new Runnable() {
+                            @SuppressLint("WrongConstant")
+                            @Override
+                            public void run() {
+                                mProgressbar.setVisibility(0);
+                                btnLogout.setEnabled(false);
+                            }
+                        });
+
+
+                        //ObjBundle.putString("ADC","1");
+
+                        Domain domain = new Domain();
+
+                        Map<PyObject, PyObject> obj = py.getModule("ret").callAttr("main").asMap();
+                        //getting the domain name... e.g: google.com
+                        String domainName = obj.get("domain").toString();
+                        domain.setDomainName(domainName);
+
+                        //.ObjBundle.putString("EFG", domainName);
+                        //getting the subdomain detials...
+                        List<PyObject> subDomainDetials = obj.get("subdomains").asList();
+
+                        boolean xsize = subDomainDetials.isEmpty();
+                        ObjBundle.putString("EFG", String.valueOf(xsize));
+                        //a temp list for storing all suddomain objects...
+                        List <SubDomain> dataSubDomainQue = new ArrayList<>();
+
+                        List <Port> dataPortQUe;
+                        if(!subDomainDetials.isEmpty()){
+                            //subdomain list is not empty...
+                            for(int i=0;i<subDomainDetials.size();i++){
+                                SubDomain subDomain = new SubDomain();
+                                //getting the inner Domain name...
+                                Map<PyObject,PyObject> innerdomainDet = obj.get("subdomains").asList().get(i).asMap();
+                                //getting the inner-domain name...
+                                String subdomainName = innerdomainDet.get("domain").toString();
+                                //getting the status...
+                                String status = innerdomainDet.get("status").toString();
+                                //getting the allowed methods...
+                                String methods;
+                                try{
+                                    methods = innerdomainDet.get("methods").toString();
+                                }catch (Exception e){
+                                    methods = "No-Data";
+                                }
+                                //adding data to subdomain object...
+                                subDomain.setSubDomainName(subdomainName);
+                                subDomain.setStatus(status);
+                                subDomain.setDNS("DNS-Data");
+                                subDomain.setTechnology("TECH-Data");
+                                subDomain.setMethods(methods);
+                                subDomain.setWhois("WHOIS-Data");
+                                //a temp list for storing all the ports...
+                                dataPortQUe = new ArrayList<>();
+                                //getting the ports...
+                                //there is chance for the ports list is empty...
+                                List<PyObject> portDetials = innerdomainDet.get("ports").asList();
+                                if(!portDetials.isEmpty()){
+                                    //port list is not empty
+                                    for(int j=0;j<portDetials.size();j++){
+                                        Port port = new Port();
+                                        //traveling through each port list elements...
+                                        Map<PyObject,PyObject> innerPortDet = innerdomainDet.get("ports").asList().get(j).asMap();
+                                        //getting port number...
+                                        String portNo = innerPortDet.get("portNo").toString();
+                                        //getting service...
+                                        String service = innerPortDet.get("service").toString();
+                                        //getting banner...
+                                        String banner = innerPortDet.get("banner").toString();
+
+                                        port.setPortNo(portNo);
+                                        port.setBanner(banner);
+                                        port.setService(service);
+                                        //adding to SubDoamin class...
+                                        dataPortQUe.add(port);
+                                    }
+                                }else{
+                                    //port list is empty...
+                                    //adding an templete with no-data...
+                                    Port port = new Port();
+                                    port.setPortNo("No-Data");
+                                    port.setBanner("No-Data");
+                                    port.setService("No-Data");
+                                    //adding to SubDoamin class...
+                                    dataPortQUe.add(port);
+                                }
+                                subDomain.setPortList(dataPortQUe);
+
+                                dataSubDomainQue.add(subDomain);
+                            }
+                        }else {
+                            //Subdomain list is empty..
+                            //adding an templete with no-data...
+                            SubDomain subDomain = new SubDomain();
+                            subDomain.setWhois("No-Data");
+                            subDomain.setSubDomainName("No-Data");
+                            subDomain.setMethods("No-Data");
+                            subDomain.setDNS("No-Data");
+                            subDomain.setTechnology("No-Data");
+                            subDomain.setStatus("No-Data");
+
+
+                            dataPortQUe = new ArrayList<>();
+
+                            Port port = new Port();
+                            port.setPortNo("No-Data");
+                            port.setBanner("No-Data");
+                            port.setService("No-Data");
+                            //adding to SubDoamin class...
+                            dataPortQUe.add(port);
+
+
+                            subDomain.setPortList(dataPortQUe);
+
+
+                        }
+
+                        domain.setSubDomainList(dataSubDomainQue);
+                        reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+                        ObjMessage.setData(ObjBundle);
+
+                        ObjHandler.sendMessage(ObjMessage);
+
+
+                        //Maing the ProgressBar INVisible and Button Visible...
+                        ObjHandler.post(new Runnable() {
+                            @SuppressLint("WrongConstant")
+                            @Override
+                            public void run() {
+                                btnLogout.setEnabled(true);
                                 mProgressbar.setVisibility(4);
                             }
                         });
