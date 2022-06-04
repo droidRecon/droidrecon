@@ -32,6 +32,8 @@ android {
                 install "ping3"
                 install "python-Wappalyzer"
                 install "icmplib"
+                install "python-whois"
+                install "bs4"
                 //install "urllib"
             }
         }
@@ -67,4 +69,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database:20.0.5'
     implementation 'com.google.firebase:firebase-auth:21.0.5'
+
+    implementation 'com.google.code.gson:gson:2.2.4'
 }

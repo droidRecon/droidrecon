@@ -1,5 +1,9 @@
 package com.iiitmk.project.droidrecon;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 public class SubDomain {
@@ -10,12 +14,13 @@ public class SubDomain {
     String Whois;
     String DNS;
     List<Port> portList;
+    List<Directory> directoryList;
 
 
     public SubDomain() {
     }
 
-    public SubDomain(String subDomainName, String status, String methods, String technology, String whois, String DNS, List<Port> portList) {
+    public SubDomain(String subDomainName, String status, String methods, String technology, String whois, String DNS, List<Port> portList, List<Directory> directoryList) {
         SubDomainName = subDomainName;
         Status = status;
         Methods = methods;
@@ -23,6 +28,7 @@ public class SubDomain {
         Whois = whois;
         this.DNS = DNS;
         this.portList = portList;
+        this.directoryList = directoryList;
     }
 
     public String getSubDomainName() {
@@ -80,4 +86,13 @@ public class SubDomain {
     public void setPortList(List<Port> portList) {
         this.portList = portList;
     }
+
+    public List<Directory> getDirectoryList() {
+        return directoryList;
+    }
+
+    public void setDirectoryList(List<Directory> directoryList) {
+        this.directoryList = directoryList;
+    }
+
 }

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DroidRecon">
         <activity
+            android:name=".ViewSubDomain"
+            android:exported="false" />
+        <activity
             android:name=".StagedHome"
             android:exported="false" />
         <activity

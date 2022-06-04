@@ -114,14 +114,14 @@ public class HomeUI extends AppCompatActivity {
                 //getting the current date and time...
                 DateFormat df= new SimpleDateFormat("MMM-dd-yyyy HH-mm-ss");
                 Date dateobj = new Date();
+                String tim = df.format(dateobj);
+                String refName = ref+" - "+tim;
 
                 //Making the Initial reference for first entry to DB...
-                reference= FirebaseDatabase.getInstance().getReference().child("Data").child("ScanResult").child(phone).child(ref).child(df.format(dateobj));
+                reference= FirebaseDatabase.getInstance().getReference().child("Data").child("ScanResult").child(phone).child(refName);
 
 
                 //making new thread...
-
-
 
                 Runnable ObjRunnable = new Runnable() {
                     Message ObjMessage = ObjHandler.obtainMessage();
@@ -154,6 +154,9 @@ public class HomeUI extends AppCompatActivity {
                         //getting the domain name... e.g: google.com
                         String domainName = obj.get("domain").toString();
                         domain.setDomainName(domainName);
+                        domain.setTime(df.format(dateobj));
+                        domain.setMode("Normal");
+                        domain.setFullName(refName);
 
                         //.ObjBundle.putString("EFG", domainName);
                         //getting the subdomain detials...
@@ -165,6 +168,7 @@ public class HomeUI extends AppCompatActivity {
                         List <SubDomain> dataSubDomainQue = new ArrayList<>();
 
                         List <Port> dataPortQUe;
+                        List<Directory> dataDirQue;
                         if(!subDomainDetials.isEmpty()){
                             //subdomain list is not empty...
                             for(int i=0;i<subDomainDetials.size();i++){
@@ -182,13 +186,68 @@ public class HomeUI extends AppCompatActivity {
                                 }catch (Exception e){
                                     methods = "No-Data";
                                 }
+                                //getting the whois...
+                                String whois = innerdomainDet.get("whois").toString();
+                                //getting the technology...
+                                String tech = innerdomainDet.get("tech").toString();
                                 //adding data to subdomain object...
                                 subDomain.setSubDomainName(subdomainName);
                                 subDomain.setStatus(status);
                                 subDomain.setDNS("DNS-Data");
-                                subDomain.setTechnology("TECH-Data");
+
+                                subDomain.setTechnology(tech);
                                 subDomain.setMethods(methods);
-                                subDomain.setWhois("WHOIS-Data");
+                                //getting the portlist
+                                //a temp list for storing all the directories...
+                                dataDirQue = new ArrayList<>();
+                                //there is a chance for the directory list is empty...
+                                List<PyObject> dirDetials = innerdomainDet.get("directory").asList();
+                                if(!dirDetials.isEmpty()){
+                                    for(int k=0;k<dirDetials.size();k++){
+                                        Directory directory = new Directory();
+                                        //traveling through each directory list elements...
+                                        Map<PyObject,PyObject> innerPortDet = innerdomainDet.get("directory").asList().get(k).asMap();
+                                        //getting path...
+                                        String path = innerPortDet.get("path").toString();
+                                        //getting status...
+                                        String statusPath = innerPortDet.get("status").toString();
+
+                                        List<String> urlObj = new ArrayList<>();
+
+
+                                        List<PyObject> urlPyObj = innerPortDet.get("urls").asList();
+
+                                        if(!urlPyObj.isEmpty()){
+                                            for(int m=0;m<urlPyObj.size();m++){
+                                                urlObj.add(String.valueOf(urlPyObj.get(m)));
+                                            }
+                                        }else {
+                                            urlObj.add("No-Data");
+                                        }
+
+                                        directory.setUrls(urlObj);
+
+                                        directory.setPath(path);
+                                        directory.setStatus(statusPath);
+
+
+                                        dataDirQue.add(directory);
+
+                                    }
+                                }else{
+                                    //port list is empty...
+                                    //adding an templete with no-data...
+                                    Directory directory = new Directory();
+                                    directory.setStatus("No-Data");
+                                    directory.setPath("No-Data");
+                                    List<String> urlObj = new ArrayList<>();
+                                    urlObj.add("No-Data");
+                                    directory.setUrls(urlObj);
+                                    //adding to SubDoamin class...
+                                    dataDirQue.add(directory);
+                                }
+
+                                subDomain.setWhois(whois);
                                 //a temp list for storing all the ports...
                                 dataPortQUe = new ArrayList<>();
                                 //getting the ports...
@@ -225,6 +284,8 @@ public class HomeUI extends AppCompatActivity {
                                 }
                                 subDomain.setPortList(dataPortQUe);
 
+                                subDomain.setDirectoryList(dataDirQue);
+
                                 dataSubDomainQue.add(subDomain);
                             }
                         }else {
@@ -248,8 +309,20 @@ public class HomeUI extends AppCompatActivity {
                             //adding to SubDoamin class...
                             dataPortQUe.add(port);
 
+                            dataDirQue = new ArrayList<>();
+
+                            Directory directory = new Directory();
+                            directory.setStatus("No-Data");
+                            directory.setPath("No-Data");
+                            List<String> urlObj = new ArrayList<>();
+                            urlObj.add("No-Data");
+                            directory.setUrls(urlObj);
+                            //adding to SubDoamin class...
+                            dataDirQue.add(directory);
+
 
                             subDomain.setPortList(dataPortQUe);
+                            subDomain.setDirectoryList(dataDirQue);
 
                             dataSubDomainQue.add(subDomain);
 
@@ -260,7 +333,7 @@ public class HomeUI extends AppCompatActivity {
                         reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Scan Result Uploaded",Toast.LENGTH_LONG).show();
                             }
                         });
 

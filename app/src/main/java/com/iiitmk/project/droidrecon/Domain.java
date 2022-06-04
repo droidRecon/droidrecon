@@ -1,23 +1,34 @@
 package com.iiitmk.project.droidrecon;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.os.Bundle;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.io.Serializable;
 import java.util.List;
-import java.util.ListIterator;
 
 public class Domain {
     String domainName;
+    String time;
+    String mode;
+    String fullName;
     List<SubDomain> subDomainList;
 
     public Domain() {
     }
 
-    public Domain(String domainName, List<SubDomain> subDomainList) {
+    public Domain(String domainName, String time, String mode, String fullName, List<SubDomain> subDomainList) {
         this.domainName = domainName;
+        this.time = time;
+        this.mode = mode;
+        this.fullName = fullName;
         this.subDomainList = subDomainList;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getDomainName() {
@@ -34,5 +45,21 @@ public class Domain {
 
     public void setSubDomainList(List<SubDomain> subDomainList) {
         this.subDomainList = subDomainList;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 }

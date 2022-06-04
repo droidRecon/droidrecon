@@ -2,6 +2,9 @@ from SubDomain import *
 from PortTCP import *
 from urllib.parse import urlsplit
 import threading
+import whois
+from Wappalyzer import Wappalyzer, WebPage
+from DirectoryList import *
 
 output = {}
 
@@ -98,6 +101,39 @@ def bannerEnum(domain,port):
     except Exception as e:
         return ""
 
+#directory listing...
+def directoryEnum(protocol,host):
+    objDir = DirectoryList(protocol,host)
+    objDir.thread_list=[]
+    for t in range(100):
+        thread=threading.Thread(target=objDir.scan)
+        objDir.thread_list.append(thread)
+    for thread in objDir.thread_list:
+        thread.start()
+    for thread in objDir.thread_list:
+        thread.join(1.0)
+    return objDir.output_directory
+
+
+#whois lookup....
+def whoisEnum(domain):
+    try:
+        w = whois.whois(domain)
+        return str(w)
+    except Exception as e:
+        return "Exception on whois"
+
+#technology enumeration...
+def techEnum(protocol,domain):
+    try:
+        url = f"{protocol}://{domain}"
+        webpage = WebPage.new_from_url(url)
+        wappalyzer = Wappalyzer.latest()
+        #wappalyzer.analyze(webpage)
+        return str(wappalyzer.analyze_with_versions_and_categories(webpage))
+    except Exception as e:
+        return "Exception on Tech"
+
 def main(userInput):
     ###print(extractFe(userInput))
     proto,domainName = extractFe(userInput)
@@ -107,14 +143,28 @@ def main(userInput):
     output["domain"]=domainName
     subDomainsList=[]
 
-    #for i in op:
-    #    print(i[0])
+
+    # if len(op)==0:
+    #     print("No subdomains Found!.....")
+    #     #
+    #     response = requests.get(f"{proto}://{domainName}")
+    #     responseOpt = requests.options(f"{proto}://{domainName}")
+    #     op[0]=[domainName,str(response.status_code),responseOpt.raw.getheader('allow')]
+
 
 
     for host in op:
 
         subInnerDomain={}
         subInnerDomain["domain"]=host[0]
+
+        #storing the whois lookup...
+        subInnerDomain["whois"]=whoisEnum(host[0])
+        #techology identifications...
+        subInnerDomain["tech"]=techEnum(proto,host[0])
+        #directory enumeration...
+        subInnerDomain["directory"]=directoryEnum(proto,host[0])
+
         #port scanning
         portsFull=[]
 
@@ -135,6 +185,7 @@ def main(userInput):
             portsFull.append(portDetials)
 
 
+        #directory listing...
 
         subInnerDomain["status"]=host[1]
         subInnerDomain["methods"]=host[2]
@@ -145,10 +196,7 @@ def main(userInput):
         subDomainsList.append(subInnerDomain)
 
 
-
     output["subdomains"]=subDomainsList
-
-
 
 
     #print(op)
