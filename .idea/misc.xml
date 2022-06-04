@@ -3,15 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_directory_view.xml" value="0.1734375" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_dnsview.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_home_ui.xml" value="0.16" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_open_ports.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_saved_results.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_sign_up.xml" value="0.21" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_staged_home.xml" value="0.1734375" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_tech_view.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_view_sub_domain.xml" value="0.1" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_whois_view.xml" value="0.15625" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/activity_wifi.xml" value="0.1734375" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/item_directory.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/item_domain.xml" value="0.1734375" />
+        <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/item_port.xml" value="0.1734375" />
         <entry key="..\:/Users/Ajin Mathew/AndroidStudioProjects/DroidRecon/app/src/main/res/layout/item_subdomain.xml" value="0.1734375" />
       </map>
     </option>

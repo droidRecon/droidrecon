@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.List;
 
-public class SubDomain {
+public class SubDomain implements Parcelable{
     String SubDomainName;
     String Status;
     String Methods;
@@ -30,6 +30,29 @@ public class SubDomain {
         this.portList = portList;
         this.directoryList = directoryList;
     }
+
+    protected SubDomain(Parcel in) {
+        SubDomainName = in.readString();
+        Status = in.readString();
+        Methods = in.readString();
+        Technology = in.readString();
+        Whois = in.readString();
+        DNS = in.readString();
+        portList = in.createTypedArrayList(Port.CREATOR);
+        directoryList = in.createTypedArrayList(Directory.CREATOR);
+    }
+
+    public static final Creator<SubDomain> CREATOR = new Creator<SubDomain>() {
+        @Override
+        public SubDomain createFromParcel(Parcel in) {
+            return new SubDomain(in);
+        }
+
+        @Override
+        public SubDomain[] newArray(int size) {
+            return new SubDomain[size];
+        }
+    };
 
     public String getSubDomainName() {
         return SubDomainName;
@@ -95,4 +118,24 @@ public class SubDomain {
         this.directoryList = directoryList;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(SubDomainName);
+        parcel.writeString(Status);
+        parcel.writeString(Methods);
+        parcel.writeString(Technology);
+        parcel.writeString(Whois);
+        parcel.writeString(DNS);
+        parcel.writeTypedList(portList);
+        parcel.writeTypedList(directoryList);
+    }
+
+    public static Creator<SubDomain> getCREATOR() {
+        return CREATOR;
+    }
 }

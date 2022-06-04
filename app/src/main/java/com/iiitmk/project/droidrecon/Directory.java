@@ -1,8 +1,11 @@
 package com.iiitmk.project.droidrecon;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Directory {
+public class Directory implements Parcelable {
     String path;
     String status;
     List<String> urls;
@@ -15,6 +18,24 @@ public class Directory {
         this.status = status;
         this.urls = urls;
     }
+
+    protected Directory(Parcel in) {
+        path = in.readString();
+        status = in.readString();
+        urls = in.createStringArrayList();
+    }
+
+    public static final Creator<Directory> CREATOR = new Creator<Directory>() {
+        @Override
+        public Directory createFromParcel(Parcel in) {
+            return new Directory(in);
+        }
+
+        @Override
+        public Directory[] newArray(int size) {
+            return new Directory[size];
+        }
+    };
 
     public List<String> getUrls() {
         return urls;
@@ -38,5 +59,17 @@ public class Directory {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(path);
+        parcel.writeString(status);
+        parcel.writeStringList(urls);
     }
 }

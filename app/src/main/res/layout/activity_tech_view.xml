@@ -4,14 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewSubDomain"
+    tools:context=".TechView"
+    android:orientation="vertical"
     android:gravity="center"
-    android:padding="15dp"
-    android:orientation="vertical">
+    android:padding="15dp">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerviewSubDomain"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/techTechView"/>
+
+    </ScrollView>
 
 </LinearLayout>

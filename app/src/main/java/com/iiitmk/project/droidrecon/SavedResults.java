@@ -43,9 +43,9 @@ public class SavedResults extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataNews:snapshot.getChildren()){
-                    Domain newsClass=dataNews.getValue(Domain.class);
-                    domainList.add(newsClass);
+                for(DataSnapshot dataSnap:snapshot.getChildren()){
+                    Domain dataClass=dataSnap.getValue(Domain.class);
+                    domainList.add(dataClass);
                 }
 
                 adapter=new CustomAdapterDomain(domainList,getApplicationContext());

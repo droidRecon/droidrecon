@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DroidRecon">
         <activity
+            android:name=".TechView"
+            android:exported="false" />
+        <activity
+            android:name=".DNSView"
+            android:exported="false" />
+        <activity
+            android:name=".WhoisView"
+            android:exported="false" />
+        <activity
+            android:name=".DirectoryView"
+            android:exported="false" />
+        <activity
+            android:name=".OpenPorts"
+            android:exported="false" />
+        <activity
             android:name=".ViewSubDomain"
             android:exported="false" />
         <activity

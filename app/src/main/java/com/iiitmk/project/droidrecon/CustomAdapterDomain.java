@@ -20,11 +20,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomAdapterDomain extends RecyclerView.Adapter<CustomAdapterDomain.MyViewHolderNews>  {
+public class CustomAdapterDomain extends RecyclerView.Adapter<CustomAdapterDomain.MyViewHolderDomain>  {
 
     Context context;
     List<Domain> domainList;
-    SharedPreferences.Editor editor;
 
     public CustomAdapterDomain(List<Domain> domainList, Context applicationContext) {
         this.domainList = domainList;
@@ -33,13 +32,13 @@ public class CustomAdapterDomain extends RecyclerView.Adapter<CustomAdapterDomai
 
     @NonNull
     @Override
-    public MyViewHolderNews onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolderDomain onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_domain,parent,false);
-        return new MyViewHolderNews(view);
+        return new MyViewHolderDomain(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolderNews holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderDomain holder, int position) {
         final Domain domain = domainList.get(position);
         holder.domainNameTxt.setText(domain.domainName);
         holder.timeTxt.setText(domain.time);
@@ -51,22 +50,12 @@ public class CustomAdapterDomain extends RecyclerView.Adapter<CustomAdapterDomai
                 //Toast.makeText(context.getApplicationContext(), String.valueOf(domain.getSubDomainList().size()),Toast.LENGTH_LONG).show();
 
                 Intent in=new Intent( view.getContext(),ViewSubDomain.class );
-                in.putExtra("domainName",domain.domainName);
-                in.putExtra("fullName",domain.fullName);
-                in.putExtra("Mode",domain.mode);
-                in.putExtra("time",String.valueOf(domain.getSubDomainList().size()));
+                //in.putExtra("domainName",domain.domainName);
+                //in.putExtra("fullName",domain.fullName);
+                //in.putExtra("Mode",domain.mode);
+                //in.putExtra("time",String.valueOf(domain.getSubDomainList().size()));
+                in.putExtra("ADC",domain);
                 view.getContext().startActivity( in );
-
-
-
-
-
-
-
-
-
-
-
 
             }
         });
@@ -78,9 +67,9 @@ public class CustomAdapterDomain extends RecyclerView.Adapter<CustomAdapterDomai
         return domainList.size();
     }
 
-    public class MyViewHolderNews extends RecyclerView.ViewHolder {
+    public class MyViewHolderDomain extends RecyclerView.ViewHolder {
         TextView domainNameTxt,modeTxt,timeTxt;
-        public MyViewHolderNews(View view) {
+        public MyViewHolderDomain(View view) {
             super(view);
             domainNameTxt=view.findViewById(R.id.domainItemDomain);
             modeTxt=view.findViewById(R.id.modeItemDomain);
