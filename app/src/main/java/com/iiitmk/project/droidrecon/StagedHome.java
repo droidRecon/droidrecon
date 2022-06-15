@@ -254,12 +254,14 @@ public class StagedHome extends AppCompatActivity {
                                 }
                                 //getting the whois...
                                 String whois = innerdomainDet.get("whois").toString();
+                                //getting the DNS Enumeration....
+                                //String dns = innerdomainDet.get("DNS").toString();
                                 //getting the technology...
                                 String tech = innerdomainDet.get("tech").toString();
                                 //adding data to subdomain object...
                                 subDomain.setSubDomainName(subdomainName);
                                 subDomain.setStatus(status);
-                                subDomain.setDNS("DNS-Data");
+                                subDomain.setDNS("No-Data");
 
                                 subDomain.setTechnology(tech);
                                 subDomain.setMethods(methods);

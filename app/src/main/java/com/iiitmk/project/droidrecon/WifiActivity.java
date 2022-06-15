@@ -106,7 +106,7 @@ public class WifiActivity extends AppCompatActivity {
                         List<WifiPort> portTemp;
 
                         List<PyObject> Wifiobj = Python.getInstance().getModule("wifiScan").callAttr("main", ipList).asList();
-                        txtStatus.setText(String.valueOf(Wifiobj));
+                        txtStatus.setText("Scan Completed");
                         //list for adapter...
                         List<WifiData> wifiAdapterList = new ArrayList<>();
                         if(!Wifiobj.isEmpty()){

@@ -1,6 +1,7 @@
 package com.iiitmk.project.droidrecon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,25 @@ public class CustomAdapterWifi extends RecyclerView.Adapter<CustomAdapterWifi.My
     public void onBindViewHolder(@NonNull MyViewHolderWifi holder, int position) {
         final WifiData wifiData = wifiDataList.get(position);
         holder.txtIp.setText(wifiData.ip);
+
+        ///
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(context.getApplicationContext(), String.valueOf(domain.getSubDomainList().size()),Toast.LENGTH_LONG).show();
+
+                Intent in=new Intent( view.getContext(),ViewWifiPort.class );
+                //in.putExtra("domainName",domain.domainName);
+                //in.putExtra("fullName",domain.fullName);
+                //in.putExtra("Mode",domain.mode);
+                //in.putExtra("time",String.valueOf(domain.getSubDomainList().size()));
+                in.putExtra("ADC",wifiData);
+                view.getContext().startActivity( in );
+
+            }
+        });
+
+
     }
 
 
