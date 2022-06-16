@@ -103,7 +103,7 @@ EditText edusername,edemail,edphone,edpassword,edrepassword;
                             if (task.isSuccessful())
                             {
                                 editor=getSharedPreferences("LOGIN",MODE_PRIVATE).edit();
-                                editor.putString("emaili",email);
+                                editor.putString("emailid",email);
                                 editor.putString("mobile",phone);
                                 editor.commit();
                                 startActivity( new Intent(getApplicationContext(),HomeUI.class) );

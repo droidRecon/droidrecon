@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +37,9 @@ public class HomeUI extends AppCompatActivity {
     EditText edTarget;
     TextView txt;
     ProgressBar mProgressbar;
+
+    SharedPreferences.Editor editor;
+    SharedPreferences preferences;
 
     DatabaseReference reference;
 
@@ -76,6 +80,16 @@ public class HomeUI extends AppCompatActivity {
         mProgressbar.setVisibility(View.INVISIBLE);
 
 
+        //shared preference --> check it contain data
+        //remove before deployment...
+        preferences=getSharedPreferences("LOGIN",MODE_PRIVATE);
+        String uname=preferences.getString("emailid",null);
+        if(uname!=null){
+            Toast.makeText(getApplicationContext(),uname+"12345",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getApplicationContext(),"Null Data",Toast.LENGTH_LONG).show();
+        }
+
         btnSaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +121,9 @@ public class HomeUI extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Scanning on normal", Toast.LENGTH_SHORT).show();
                 //Change the Phone no with logged user cred,,,
-                String phone="9447574692";
+                //String phone="9447574692";
+                preferences=getSharedPreferences("LOGIN",MODE_PRIVATE);
+                String phone=preferences.getString("mobile",null);
                 String host = edTarget.getText().toString().trim();
 
                 String ref = host.replace(".","-");
@@ -366,202 +382,14 @@ public class HomeUI extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "logout!...", Toast.LENGTH_SHORT).show();
-                //Change the Phone no with logged user cred,,,
-//                String phone="9447574692";
-//                //Making the Initial reference for first entry to DB...
-//                reference= FirebaseDatabase.getInstance().getReference().child("Data").child("ScanResult").child(phone);
-//
-////                Domain domain = new Domain();
-////                //1
-////
-////                SubDomain subDomain1 = new SubDomain();
-////                subDomain1.setSubDomainName("qwert.abc.com");
-////                subDomain1.setStatus("200");
-////
-////                List <SubDomain> data = new ArrayList<>();
-////                data.add(subDomain1);
-////
-////                SubDomain subDomain2 = new SubDomain();
-////                subDomain2.setSubDomainName("efg.abc.com");
-////                subDomain2.setStatus("404");
-////
-////                data.add(subDomain2);
-////
-////                domain.setSubDomainList(data);
-////
-////                reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
-////                    @Override
-////                    public void onSuccess(Void aVoid) {
-////                        Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
-////                    }
-////                });
-//
-//
-//
-//
-//
-//                //making new thread...
-//                Runnable ObjRunnable = new Runnable() {
-//                    Message ObjMessage = ObjHandler.obtainMessage();
-//                    Bundle ObjBundle = new Bundle();
-//
-//                    @Override
-//                    public void run() {
-//                        //mProgressbar.setVisibility(View.VISIBLE);
-//
-//                        //String domain = "x";
-//                        //String subDomains = "x";
-//                        //String innerDomain = "x";
-//                        //String status = "x";
-//                        //String sdomain = "x";
-//                        //btnNormal.setEnabled(false);
-//                        //Maing the ProgressBar Visible and Button Invisible...
-//                        ObjHandler.post(new Runnable() {
-//                            @SuppressLint("WrongConstant")
-//                            @Override
-//                            public void run() {
-//                                mProgressbar.setVisibility(0);
-//                                btnLogout.setEnabled(false);
-//                            }
-//                        });
-//
-//
-//                        //ObjBundle.putString("ADC","1");
-//
-//                        Domain domain = new Domain();
-//
-//                        Map<PyObject, PyObject> obj = py.getModule("ret").callAttr("main").asMap();
-//                        //getting the domain name... e.g: google.com
-//                        String domainName = obj.get("domain").toString();
-//                        domain.setDomainName(domainName);
-//
-//                        //.ObjBundle.putString("EFG", domainName);
-//                        //getting the subdomain detials...
-//                        List<PyObject> subDomainDetials = obj.get("subdomains").asList();
-//
-//                        boolean xsize = subDomainDetials.isEmpty();
-//                        ObjBundle.putString("EFG", String.valueOf(xsize));
-//                        //a temp list for storing all suddomain objects...
-//                        List <SubDomain> dataSubDomainQue = new ArrayList<>();
-//
-//                        List <Port> dataPortQUe;
-//                        if(!subDomainDetials.isEmpty()){
-//                            //subdomain list is not empty...
-//                            for(int i=0;i<subDomainDetials.size();i++){
-//                                SubDomain subDomain = new SubDomain();
-//                                //getting the inner Domain name...
-//                                Map<PyObject,PyObject> innerdomainDet = obj.get("subdomains").asList().get(i).asMap();
-//                                //getting the inner-domain name...
-//                                String subdomainName = innerdomainDet.get("domain").toString();
-//                                //getting the status...
-//                                String status = innerdomainDet.get("status").toString();
-//                                //getting the allowed methods...
-//                                String methods;
-//                                try{
-//                                    methods = innerdomainDet.get("methods").toString();
-//                                }catch (Exception e){
-//                                    methods = "No-Data";
-//                                }
-//                                //adding data to subdomain object...
-//                                subDomain.setSubDomainName(subdomainName);
-//                                subDomain.setStatus(status);
-//                                subDomain.setDNS("DNS-Data");
-//                                subDomain.setTechnology("TECH-Data");
-//                                subDomain.setMethods(methods);
-//                                subDomain.setWhois("WHOIS-Data");
-//                                //a temp list for storing all the ports...
-//                                dataPortQUe = new ArrayList<>();
-//                                //getting the ports...
-//                                //there is chance for the ports list is empty...
-//                                List<PyObject> portDetials = innerdomainDet.get("ports").asList();
-//                                if(!portDetials.isEmpty()){
-//                                    //port list is not empty
-//                                    for(int j=0;j<portDetials.size();j++){
-//                                        Port port = new Port();
-//                                        //traveling through each port list elements...
-//                                        Map<PyObject,PyObject> innerPortDet = innerdomainDet.get("ports").asList().get(j).asMap();
-//                                        //getting port number...
-//                                        String portNo = innerPortDet.get("portNo").toString();
-//                                        //getting service...
-//                                        String service = innerPortDet.get("service").toString();
-//                                        //getting banner...
-//                                        String banner = innerPortDet.get("banner").toString();
-//
-//                                        port.setPortNo(portNo);
-//                                        port.setBanner(banner);
-//                                        port.setService(service);
-//                                        //adding to SubDoamin class...
-//                                        dataPortQUe.add(port);
-//                                    }
-//                                }else{
-//                                    //port list is empty...
-//                                    //adding an templete with no-data...
-//                                    Port port = new Port();
-//                                    port.setPortNo("No-Data");
-//                                    port.setBanner("No-Data");
-//                                    port.setService("No-Data");
-//                                    //adding to SubDoamin class...
-//                                    dataPortQUe.add(port);
-//                                }
-//                                subDomain.setPortList(dataPortQUe);
-//
-//                                dataSubDomainQue.add(subDomain);
-//                            }
-//                        }else {
-//                            //Subdomain list is empty..
-//                            //adding an templete with no-data...
-//                            SubDomain subDomain = new SubDomain();
-//                            subDomain.setWhois("No-Data");
-//                            subDomain.setSubDomainName("No-Data");
-//                            subDomain.setMethods("No-Data");
-//                            subDomain.setDNS("No-Data");
-//                            subDomain.setTechnology("No-Data");
-//                            subDomain.setStatus("No-Data");
-//
-//
-//                            dataPortQUe = new ArrayList<>();
-//
-//                            Port port = new Port();
-//                            port.setPortNo("No-Data");
-//                            port.setBanner("No-Data");
-//                            port.setService("No-Data");
-//                            //adding to SubDoamin class...
-//                            dataPortQUe.add(port);
-//
-//
-//                            subDomain.setPortList(dataPortQUe);
-//
-//
-//                        }
-//
-//                        domain.setSubDomainList(dataSubDomainQue);
-//                        reference.setValue(domain).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//
-//
-//                        ObjMessage.setData(ObjBundle);
-//
-//                        ObjHandler.sendMessage(ObjMessage);
-//
-//
-//                        //Maing the ProgressBar INVisible and Button Visible...
-//                        ObjHandler.post(new Runnable() {
-//                            @SuppressLint("WrongConstant")
-//                            @Override
-//                            public void run() {
-//                                btnLogout.setEnabled(true);
-//                                mProgressbar.setVisibility(4);
-//                            }
-//                        });
-//                    }
-//                };
-//                Thread ObjBgThread = new Thread(ObjRunnable);
-//                ObjBgThread.start();
+                //Toast.makeText(getApplicationContext(), "logout!...", Toast.LENGTH_SHORT).show();
+                editor=getSharedPreferences("LOGIN",MODE_PRIVATE).edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(getApplicationContext(),"Successfully Logout",Toast.LENGTH_LONG).show();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
 

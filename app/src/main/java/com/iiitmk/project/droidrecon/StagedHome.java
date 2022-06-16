@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,8 +39,9 @@ public class StagedHome extends AppCompatActivity {
 
     List<String> userInputs;
 
-
+    SharedPreferences.Editor editor;
     DatabaseReference reference;
+    SharedPreferences preferences;
 
     Handler ObjHandler = new Handler(){
 
@@ -173,7 +175,9 @@ public class StagedHome extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Scanning on Staged", Toast.LENGTH_SHORT).show();
                 //Change the Phone no with logged user cred,,,
-                String phone="9447574692";
+                //String phone="9447574692";
+                preferences=getSharedPreferences("LOGIN",MODE_PRIVATE);
+                String phone=preferences.getString("mobile",null);
                 //String host = edTarget.getText().toString().trim();
 
                 String ref = userInputs.get(0).replace(".","-");
@@ -429,6 +433,18 @@ public class StagedHome extends AppCompatActivity {
             }
         });
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editor=getSharedPreferences("LOGIN",MODE_PRIVATE).edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(getApplicationContext(),"Successfully Logout",Toast.LENGTH_LONG).show();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        });
 
     }
 }

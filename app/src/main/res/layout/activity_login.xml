@@ -18,7 +18,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="eMail ID"
         android:paddingBottom="10dp"
         app:hintTextColor="#050505"
         app:boxStrokeColor="#465FEE"
@@ -26,13 +26,33 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/usernameLogin"
+            android:id="@+id/emailIDLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#0C84E4"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone"
+        android:paddingBottom="10dp"
+        app:hintTextColor="#050505"
+        app:boxStrokeColor="#465FEE"
+        android:textColorHint="#324CE0"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#0C84E4"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
