@@ -68,11 +68,19 @@ EditText edusername,edemail,edphone,edpassword,edrepassword;
                 {
                     edpassword.setError("password is required");
                     edpassword.requestFocus();
-                }else if (phone.isEmpty())
+                }else if (password.length()<8){
+                    edpassword.setError("Minimum 8 Characters");
+                    edpassword.requestFocus();
+                }
+                else if (phone.isEmpty())
                 {
                     edphone.setError("Phone No is required");
                     edphone.requestFocus();
-                }else if (UserName.isEmpty())
+                }else if (phone.length()<10){
+                    edphone.setError("Invalid Mobile Number");
+                    edphone.requestFocus();
+                }
+                else if (UserName.isEmpty())
                 {
                     edusername.setError("username is required");
                     edusername.requestFocus();
