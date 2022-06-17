@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,13 +22,16 @@ public class SavedResults extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     DatabaseReference reference;
     List<Domain> domainList;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_results);
 
         //get the current user from sharedpreference...
-        String login = "9447574692";
+        //String login = "9447574692";
+        preferences=getSharedPreferences("LOGIN",MODE_PRIVATE);
+        String login=preferences.getString("mobile",null);
 
         //linking recyclerview...
         recyclerView=(RecyclerView)findViewById(R.id.recyclerviewSavedResults);
