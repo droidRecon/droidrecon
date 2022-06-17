@@ -103,19 +103,11 @@ def techEnum(protocol,domain):
 def status_method(listodofDomains):
     output_subdomains = []
     for i in listodofDomains:
-        #print("#########################")
-        #print(i)
-
         domain = i["domain"]
         protocol=i["Protocol"]
-        #print(domain)
         try:
             response = requests.get(f"{protocol}://{domain}")
             responseOpt = requests.options(f"{protocol}://{domain}")
-            #if response.status_code==200:
-            #    self.output_subdomains200.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
-            #else:
-            #    self.output_subdomains.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
             output_subdomains.append([domain,str(response.status_code),responseOpt.raw.getheader('allow')])
         except:
             pass
@@ -123,17 +115,10 @@ def status_method(listodofDomains):
     return output_subdomains
 
 
-
 def main(userInput):
     ###print(extractFe(userInput))
 
     ret = []
-    # for i in userInput:
-    #     domains = {}
-    #     proto,domainName = extractFe(i)
-    #     domains["Protocol"]=proto
-    #     domains["domain"]=domainName
-    #     ret.append(domains)
 
     for i in range(userInput.size()):
         domains = {}
@@ -144,13 +129,8 @@ def main(userInput):
 
 
     op = status_method(ret)
-    # print("=====OP=====")
-    # print(op)
-    # print("=====OP=======")
 
-    # print(ret)
     output["domain"]=ret[0]["domain"]
-    # print(output)
     subDomainsList=[]
 
     for host in op:
@@ -202,11 +182,5 @@ def main(userInput):
     output["subdomains"]=subDomainsList
 
 
-
-
-    # print(op)
-    # print("=====================================")
-    # print("Dict - format")
-    # print(output)
     return output
 

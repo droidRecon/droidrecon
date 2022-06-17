@@ -8,7 +8,6 @@ from DirectoryList import *
 
 output = {}
 
-
 def extractFe(userInput):
     #extracting the domain name without protocols...
     base_url = "{0.netloc}".format(urlsplit(userInput))
@@ -34,14 +33,9 @@ def SubEnum(proto,domainName):
         thread.start()
     for thread in sub.thread_list:
         thread.join(1.0)
-    # #print(sub.discovered_subdomains)
-    # #print(len(sub.discovered_subdomains))
-    # #
-    # #print("x.CRT.sh Subdomain")
+    #running the crt.sh method...
     sub.crtScan()
-
-    # print(sub.discovered_subdomains)
-    # print(len(sub.discovered_subdomains))
+    #allowed methods and status code...
     sub.thread_list2=[]
     for t in range(100):
         thread=threading.Thread(target=sub.method_status)
@@ -50,21 +44,12 @@ def SubEnum(proto,domainName):
         thread.start()
     for thread in sub.thread_list2:
         thread.join(1.0)
-    # #subdomain output with status code and allowed methods...
-    # #200 responses....
-    # #print(sub.output_subdomains200)
-    # #not 200 responses....
-    # print("x.Sub Domain enumeration completed....")
-    # print(sub.output_subdomains)
-    # #perform the port scanning (on the discovered subdomains)....
-
 
     return sub.output_subdomains
 
+#port scanning
 def PortEnum(host):
     ObjPortScn = PortTCP(host)
-
-
     ObjPortScn.thread_list=[]
     for t in range(100):
         thread=threading.Thread(target=ObjPortScn.scanport)
@@ -76,16 +61,14 @@ def PortEnum(host):
 
     return ObjPortScn.discovered_ports
 
+#service enumeration based on port number...
 def serviceEnum(port):
-    #return "Port-Service"
     try:
         return socket.getservbyport(int(port),'tcp')
     except OSError:
         return ""
 
-# def bannerEnum(port):
-#     return "Port-Banner"
-
+#banner grabbing....
 def bannerEnum(domain,port):
     if port in [53,80,6980,443]:
         return ""
@@ -94,9 +77,8 @@ def bannerEnum(domain,port):
         s.settimeout(2)
         s.connect((domain,int(port)))
         banner=s.recv(1024)
-        s.shutdown(1) # By convention, but not actually necessary
+        s.shutdown(1)
         s.close()
-        #print(banner.decode("utf-8"))
         return banner.decode("utf-8")
     except Exception as e:
         return ""
@@ -114,7 +96,6 @@ def directoryEnum(protocol,host):
         thread.join(1.0)
     return objDir.output_directory
 
-
 #whois lookup....
 def whoisEnum(domain):
     try:
@@ -129,50 +110,29 @@ def techEnum(protocol,domain):
         url = f"{protocol}://{domain}"
         webpage = WebPage.new_from_url(url)
         wappalyzer = Wappalyzer.latest()
-        #wappalyzer.analyze(webpage)
         return str(wappalyzer.analyze_with_versions_and_categories(webpage))
     except Exception as e:
         return "Exception on Tech"
 
 def main(userInput):
-    ###print(extractFe(userInput))
     proto,domainName = extractFe(userInput)
-
     op = SubEnum(proto,domainName)
-
     output["domain"]=domainName
     subDomainsList=[]
 
-
-    # if len(op)==0:
-    #     print("No subdomains Found!.....")
-    #     #
-    #     response = requests.get(f"{proto}://{domainName}")
-    #     responseOpt = requests.options(f"{proto}://{domainName}")
-    #     op[0]=[domainName,str(response.status_code),responseOpt.raw.getheader('allow')]
-
-
-
     for host in op:
-
         subInnerDomain={}
         subInnerDomain["domain"]=host[0]
-
         #storing the whois lookup...
         subInnerDomain["whois"]=whoisEnum(host[0])
         #techology identifications...
         subInnerDomain["tech"]=techEnum(proto,host[0])
         #directory enumeration...
         subInnerDomain["directory"]=directoryEnum(proto,host[0])
-
         #port scanning
         portsFull=[]
-
-
         #Perform port scanning and return portNo,Service and Banner....
         ports=PortEnum(host[0])
-
-        #print(ports)
 
         for port in ports:
             portDetials={}
@@ -181,25 +141,15 @@ def main(userInput):
             portDetials["service"]=service
             portDetials["banner"]=banner
             portDetials["portNo"]=port
-
             portsFull.append(portDetials)
 
-
         #directory listing...
-
         subInnerDomain["status"]=host[1]
         subInnerDomain["methods"]=host[2]
         subInnerDomain["ports"]=portsFull
-
-
         #adding to subdomain list...
         subDomainsList.append(subInnerDomain)
 
-
     output["subdomains"]=subDomainsList
 
-
-    #print(op)
-    #print("Dict - format")
-    #print(output)
     return output

@@ -63,25 +63,3 @@ def main(portList):
 
 
     return output
-
-
-#
-# op = PortEnum(portList.get(i))
-# hostOp["ip"]=portList.get(i)
-# ports=[]
-# for p in op:
-#     det = {}
-#     banner = bannerEnum(portList.get(i),p)
-#     service = serviceEnum(p)
-#     det["service"] = service
-#     det["banner"] = banner
-#     det["portNo"] = p
-#
-#     ports.append(det)
-#
-# hostOp["ports"]=ports
-#
-# output.append(hostOp)
-#
-# #y["ports"]=op
-# #x.append(y)

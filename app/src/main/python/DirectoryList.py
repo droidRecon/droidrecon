@@ -9,7 +9,6 @@ class DirectoryList:
         self.host=host
         self.output_directory=[]
 
-
     def scan(self):
         headers={"User-Agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36"}
         dir = self.directory
@@ -17,7 +16,6 @@ class DirectoryList:
             i=dir.pop(0)
             url=f"{self.protocol}://{self.host}/{i}/"
             domain_p=url
-
             try:
                 response = requests.get(url,timeout=5)
                 output = {}

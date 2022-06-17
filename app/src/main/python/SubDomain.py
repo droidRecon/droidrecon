@@ -8,7 +8,6 @@ class SubDomain:
         self.domain=domain
         self.subdomains = ['login', 'auth', 'signup', 'signin', 'registeration', 'www', 'ftp', 'mobile', 'video', 'image', 'static', 'app', 'service', 'tools', 'email', 'local', 'data', 'file', 'live', 'www.api', 'api', 'news', 'games', 'courses', 'result', 'downloads', 'status', 'admin', 'search', 'research', 'list', 'lite', 'site', 'user', 'account', 'administrator', 'localhost', 'smtp', 'pop', 'cmd', 'shop', 'beta', 'sql', 'secure', 'demo', 'web', 'portal', 'cdn', 'dns', 'apps', 'info', 'office', 'exchange', 'test', 'docs', 'dhcp', 'new', 'accounts', 'alpha', 'alumini', 'backup', 'backups', 'git', 'community', 'client', 'database', 'developers', 'development', 'gallery', 'go', 'google', 'guest', 'help', 'home', 'host', 'id', 'info', 'payment', 'php', 'phpmyadmin', 'server', 'public', 'code', 'siteadmin', 'sitebuilder', 'log', 'logs', 'staff', 'student', 'tunnel', 'www-data', 'location', 'locations', 'lib', 'files', 'class', 'edu', 'access', 'book', 'online']
         self.discovered_subdomains = []
-        #self.output_subdomains200 = []
         self.output_subdomains = []
 
 
@@ -21,15 +20,11 @@ class SubDomain:
             url = f"{self.protocol}://{fullname}"
             try:
                 response = requests.get(url)
-                #responseOpt = requests.options(url)
-
-                #self.discovered_subdomains.append([fullname,str(response.status_code),responseOpt.raw.getheader('allow')])
                 self.discovered_subdomains.append(fullname)
             except requests.ConnectionError:
                 # if the subdomain does not exist, just pass, print nothing
                 pass
             else:
-                #self.discovered_subdomains.append(fullname)
                 pass
 
     def crtScan(self):
@@ -52,24 +47,8 @@ class SubDomain:
             try:
                 response = requests.get(f"{self.protocol}://{urlname}")
                 responseOpt = requests.options(f"{self.protocol}://{urlname}")
-                #if response.status_code==200:
-                #    self.output_subdomains200.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
-                #else:
-                #    self.output_subdomains.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
                 self.output_subdomains.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
             except:
-                # if the subdomain does not exist, just pass, print nothing
-                #pass
-                # try:
-                #     if self.protocol=="http":
-                #         pro2="https"
-                #     else:
-                #         pro2="http"
-                #     response = requests.get(f"{pro2}://{urlname}")
-                #     responseOpt = requests.options(f"{pro2}://{urlname}")
-                #     self.output_subdomains.append([urlname,str(response.status_code),responseOpt.raw.getheader('allow')])
-                # except:
-                #     pass
                 pass
 
     
