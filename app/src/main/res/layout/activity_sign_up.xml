@@ -7,7 +7,8 @@
     tools:context=".SignUpActivity"
     android:gravity="center"
     android:padding="15dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EAE4E4">
 
 
 

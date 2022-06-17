@@ -8,7 +8,8 @@
     app:cardCornerRadius="10dp"
     android:layout_margin="10dp"
     android:elevation="90dp"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:background="@drawable/graddirectory">
 
     <LinearLayout
         android:layout_width="match_parent"

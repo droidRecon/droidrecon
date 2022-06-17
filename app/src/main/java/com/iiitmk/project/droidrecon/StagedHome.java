@@ -59,7 +59,7 @@ public class StagedHome extends AppCompatActivity {
             //Map<String,Map> myMsg = (Map<String, Map>) Obj2Bundle.get("EFG");
             String myMsg = Obj2Bundle.getString("EFG");
             txtHostDis = (TextView) findViewById(R.id.textviewStagedHome);
-            txtHostDis.setText(myMsg.toString());
+            //txtHostDis.setText(myMsg.toString());
             // mProgressbar.setVisibility(View.INVISIBLE);
 
         }

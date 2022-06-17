@@ -48,7 +48,7 @@ public class WifiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wifi);
 
         txtStatus = (TextView) findViewById(R.id.statusWifiActivity);
-        txtOp = (TextView) findViewById(R.id.opWifiActivity);
+        //txtOp = (TextView) findViewById(R.id.opWifiActivity);
         btnScan = (Button) findViewById(R.id.btnScanWifiWifiActivity);
 
         recyclerView=findViewById(R.id.recyclerviewWifi);

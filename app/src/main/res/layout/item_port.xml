@@ -8,7 +8,8 @@
     app:cardCornerRadius="10dp"
     android:layout_margin="10dp"
     android:elevation="90dp"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:background="@drawable/gradsubdomain">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,11 +21,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Port No : "/>
+                android:text="Port No : "
+                android:textColor="#544949"
+                android:textSize="14dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/portNoItemPort"/>
+                android:id="@+id/portNoItemPort"
+                android:textSize="15dp"
+                android:textColor="#050505"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -33,11 +38,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Service : "/>
+                android:text="Service : "
+                android:textColor="#544949"
+                android:textSize="14dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/serviceItemPort"/>
+                android:id="@+id/serviceItemPort"
+                android:textSize="15dp"
+                android:textColor="#050505"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -46,11 +55,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Banner : "/>
+            android:text="Banner : "
+            android:textColor="#544949"
+            android:textSize="14dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bannerItemPort"/>
+            android:id="@+id/bannerItemPort"
+            android:textSize="15dp"
+            android:textColor="#050505"/>
     </LinearLayout>
 
 </LinearLayout>

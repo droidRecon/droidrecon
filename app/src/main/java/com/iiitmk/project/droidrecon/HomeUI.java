@@ -59,7 +59,7 @@ public class HomeUI extends AppCompatActivity {
             //Map<String,Map> myMsg = (Map<String, Map>) Obj2Bundle.get("EFG");
             String myMsg = Obj2Bundle.getString("EFG");
             txt = (TextView) findViewById(R.id.textview);
-            txt.setText(myMsg.toString());
+            //txt.setText(myMsg.toString());
            // mProgressbar.setVisibility(View.INVISIBLE);
 
         }
@@ -84,11 +84,11 @@ public class HomeUI extends AppCompatActivity {
         //remove before deployment...
         preferences=getSharedPreferences("LOGIN",MODE_PRIVATE);
         String uname=preferences.getString("emailid",null);
-        if(uname!=null){
-            Toast.makeText(getApplicationContext(),uname+"12345",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(getApplicationContext(),"Null Data",Toast.LENGTH_LONG).show();
-        }
+//        if(uname!=null){
+//            Toast.makeText(getApplicationContext(),uname+"12345",Toast.LENGTH_LONG).show();
+//        }else{
+//            Toast.makeText(getApplicationContext(),"Null Data",Toast.LENGTH_LONG).show();
+//        }
 
         btnSaved.setOnClickListener(new View.OnClickListener() {
             @Override

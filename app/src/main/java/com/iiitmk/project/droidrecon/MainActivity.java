@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
-    private static int SPLASH=2000;
+    private static int SPLASH=3000;
     SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
